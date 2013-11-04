@@ -8,7 +8,7 @@
 #include "config.hpp"
 #include "torset.hpp"
 
-#include "stdio.h"
+// #include "stdio.h"
 
 #include <string>
 #include <iostream>
@@ -25,10 +25,10 @@ void printUsage()
 
 		<< std::endl
 		<< PACKAGE_NAME << "  : create or update an ipset from a tor microdescriptor consensus file." << std::endl
-	   << "Version : " << PACKAGE_VERSION                                                       << std::endl
-	   << "Usage   : " << PACKAGE_NAME     << " setname [ consensusFile ]"                      << std::endl << std::endl
-	   << "consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus' in which case"      << std::endl
-	   << "you will need root privileges."                                                         << std::endl << std::endl
+	   << "Version : " << PACKAGE_VERSION                                                            << std::endl
+	   << "Usage   : " << PACKAGE_NAME     << " setname [ consensusFile ] | sudo ipset restore"      << std::endl << std::endl
+	   << "consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus' in which case"        << std::endl
+	   << "torset will require root privileges."                                                     << std::endl << std::endl
 	;
 }
 
@@ -91,8 +91,8 @@ int main( int argc, char* argv[] )
 
 	toRestore
 
-		.append( "create "       ).append( setName    ).append( " hash:ip,port -exist\n" )               // create set
-		.append( "create "       ).append( tmpSetName ).append( " hash:ip,port -exist\n" )               // create temporary set
+		.append( "create "       ).append( setName    ).append( " hash:ip,port -exist\n" )                // create set
+		.append( "create "       ).append( tmpSetName ).append( " hash:ip,port -exist\n" )                // create temporary set
 		.append( torset.getSet() )                                                                        // add the ip's to the temporary set
 		.append( "swap "         ).append( setName    ).append( " " ).append( tmpSetName ).append( "\n" ) // swap the two sets over
 		.append( "destroy "      ).append( tmpSetName ).append( "\n" )                                    // delete the temporary set
@@ -101,11 +101,16 @@ int main( int argc, char* argv[] )
 
 	// feed it all to ipset
 	//
-	FILE* ipsetSTDIN = popen( "ipset restore", "w" );
+	// FILE* ipsetSTDIN = popen( "ipset restore", "w" );
 
-	fputs( toRestore.c_str(), ipsetSTDIN );
+	// fputs( toRestore.c_str(), ipsetSTDIN );
 
-	pclose( ipsetSTDIN );
+	// pclose( ipsetSTDIN );
+
+
+	// return on stdout so people can pipe it to ipset
+	//
+	std::cout << toRestore << std::endl;
 }
 
 

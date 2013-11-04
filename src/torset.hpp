@@ -110,7 +110,7 @@ TorSet::TorSet( const std::stringstream& consensusIn, const std::string& setName
 
 	if( set.empty() )
 
-		std::cerr << "Something went wrong, set is empty. Maybe you passed the wrong inputfile or it was not formatted correctly.";
+		std::cerr << "Something went wrong, set is empty. Maybe you passed the wrong inputfile or it was not formatted correctly." << std::endl;
 
 }
 
