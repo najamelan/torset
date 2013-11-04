@@ -24,11 +24,11 @@ void printUsage()
 	std::cout
 
 		<< std::endl
-		<< "torentryset: create or update an ipset from a tor microdescriptor consensus file." << std::endl
-	   << "version    : ALPHA - you are warned"                                               << std::endl
-	   << "Usage      : torentryset setname [ consensusFile ]"                                << std::endl << std::endl
-	   << "consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus' in which case" << std::endl
-	   << "you will need root privileges."                                                    << std::endl << std::endl
+		<< PACKAGE_NAME << "  : create or update an ipset from a tor microdescriptor consensus file." << std::endl
+	   << "Version : " << PACKAGE_VERSION                                                       << std::endl
+	   << "Usage   : " << PACKAGE_NAME     << " setname [ consensusFile ]"                      << std::endl << std::endl
+	   << "consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus' in which case"      << std::endl
+	   << "you will need root privileges."                                                         << std::endl << std::endl
 	;
 }
 

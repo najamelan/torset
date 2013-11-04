@@ -1,4 +1,4 @@
-AC_INIT([torset], [1.0], [najamelan@autistici.org])
+AC_INIT([torset], [2013.11.04.ALPHA - you have been warned], [najamelan@autistici.org])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CXX
 AC_CONFIG_HEADERS([src/config.hpp])
