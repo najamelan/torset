@@ -30,7 +30,7 @@ From tarball:
 From git repo:
 --------------
 
-1. git clone ...
+1. git clone https://github.com/najamelan/torset.git
 2. git checkout master
 3. autoconf --install
 4. ./configure
