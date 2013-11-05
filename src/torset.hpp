@@ -15,29 +15,28 @@
 #include <vector>
 
 
-
-namespace tidbits
+namespace torset
 {
 
-
-class TorSet
+class IpsetRestore
 {
 	private:
 
-		std::stringstream consensus;
-		std::string       setName  ;
+		std::stringstream consensus ;
+		std::string       setName   ;
+		int               _errorCode;
 
 		// this is the first line I found when trying ipset save. I don't know if it is important to keep hashsize and maxelem
 		// have not found a format specification for ipset restore files
 		//
-		std::string set;
+		std::string _set;
 
 
 
 	public:
 
-		explicit TorSet( const std::stringstream& consensusIn, const std::string& setName );
-		virtual ~TorSet();
+		explicit IpsetRestore( const std::stringstream& consensusIn, const std::string& setName );
+		virtual ~IpsetRestore();
 
 
 		// methods
@@ -45,7 +44,8 @@ class TorSet
 
 		// returns a string which is a valid to feed to ipset restore
 		//
-		std::string getSet() const;
+		std::string set      () const { return _set      ; };
+		int         errorCode() const { return _errorCode; };
 };
 
 
@@ -53,10 +53,11 @@ class TorSet
 
 // Definitions
 
-TorSet::TorSet( const std::stringstream& consensusIn, const std::string& setName )
+IpsetRestore::IpsetRestore( const std::stringstream& consensusIn, const std::string& setName )
 
-:   consensus( consensusIn.str() )
-  , setName  ( setName           )
+:   consensus    ( consensusIn.str() )
+  , setName      ( setName           )
+  , _errorCode   ( 0                 )
 
 {
 	std::string              line      ;
@@ -82,6 +83,7 @@ TorSet::TorSet( const std::stringstream& consensusIn, const std::string& setName
 
 
 		// only work on lines that interest us
+		// sample: "r Unnamed VLNV4cpI/C4jFPVQcWKBtO2EBV8 2013-11-04 22:38:31 76.100.70.54 9001 9030"
 		//
 		if( fields.size() != 8 || fields[ 0 ] != "r" )
 
@@ -96,41 +98,36 @@ TorSet::TorSet( const std::stringstream& consensusIn, const std::string& setName
 
 		if( fields[ 6 ] != "0" )
 
-			set.append( hold );
+			_set.append( hold );
 
 
+		// second port
+		//
 		hold.clear();
 		hold.append( "add ").append( setName ).append( " " ).append( fields[ 5 ] ).append( ",tcp:" ).append( fields[ 7 ] ).append( " -exist\n" );
 
 		if( fields[ 7 ] != "0" )
 
-			set.append( hold );
+			_set.append( hold );
 	}
 
 
-	if( set.empty() )
+	if( _set.empty() )
+	{
+		std::cerr << "Something went wrong, _set is empty. Maybe you passed the wrong inputfile or it was not formatted correctly." << std::endl;
 
-		std::cerr << "Something went wrong, set is empty. Maybe you passed the wrong inputfile or it was not formatted correctly." << std::endl;
-
+		++_errorCode;
+	}
 }
 
 
 /// Destructor.
 
-TorSet::~TorSet()
+IpsetRestore::~IpsetRestore()
 {
 }
 
 
 
-// METHODS
-
-std::string
-TorSet::getSet() const
-{
-	return set;
-}
-
-
-} 			// namespace tidbits
+} 			// namespace torset
 #endif 	// Guard_QDSF65D651S_65Z1Z8Z1_3SD021NY3

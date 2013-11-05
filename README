@@ -45,11 +45,10 @@ Usage
 running torset will tell you:
 
 torset  : create or update an ipset from a tor microdescriptor consensus file.
-Version : 2013.11.04.ALPHA - you are warned
+Version : 2013.11.04.ALPHA
 Usage   : torset setname [ consensusFile ] | sudo ipset restore
 
-consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus' in which case
-you will need root privileges.
+consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus' in which case you will need root privileges.
 
 
 

@@ -24,3 +24,4 @@
 /src/torset.o
 /torset
 /torset*.tar.gz
+/src/torset.hpp.gch

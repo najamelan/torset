@@ -35,12 +35,15 @@ void printUsage()
 
 int main( int argc, char* argv[] )
 {
+	int errors = 0;
+
+
 	// check the arguments
 	//
 	if( argc < 2 || argc > 3 )
 	{
-		printUsage(   );
-		exit      ( 1 );
+		printUsage(          );
+		exit      ( ++errors );
 	}
 
 
@@ -73,15 +76,18 @@ int main( int argc, char* argv[] )
 
 
 	if( !inputFile )
-
+	{
 		std::cerr << "Error: Can't open consensus file. Do you have the right permissions?" << std::endl;
+		exit( ++errors );
+	}
 
 
 	std::stringstream inputStream;
 
 	inputStream << inputFile.rdbuf();
 
-	tidbits::TorSet torset( inputStream, tmpSetName );
+	torset::IpsetRestore ipset( inputStream, tmpSetName );
+	errors += ipset.errorCode();
 
 
 
@@ -93,7 +99,7 @@ int main( int argc, char* argv[] )
 
 		.append( "create "       ).append( setName    ).append( " hash:ip,port -exist\n" )                // create set
 		.append( "create "       ).append( tmpSetName ).append( " hash:ip,port -exist\n" )                // create temporary set
-		.append( torset.getSet() )                                                                        // add the ip's to the temporary set
+		.append( ipset.set() )                                                                            // add the ip's to the temporary set
 		.append( "swap "         ).append( setName    ).append( " " ).append( tmpSetName ).append( "\n" ) // swap the two sets over
 		.append( "destroy "      ).append( tmpSetName ).append( "\n" )                                    // delete the temporary set
 	;
@@ -111,6 +117,8 @@ int main( int argc, char* argv[] )
 	// return on stdout so people can pipe it to ipset
 	//
 	std::cout << toRestore << std::endl;
+
+	exit( errors );
 }
 
 
