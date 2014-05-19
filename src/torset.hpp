@@ -36,7 +36,7 @@ class IpsetRestore
 	public:
 
 		explicit IpsetRestore( const std::stringstream& consensusIn, const std::string& setName );
-		virtual ~IpsetRestore();
+		virtual ~IpsetRestore(){};
 
 
 		// methods
@@ -61,7 +61,6 @@ IpsetRestore::IpsetRestore( const std::stringstream& consensusIn, const std::str
 
 {
 	std::string              line      ;
-	std::string              hold      ;
 	std::vector<std::string> fields    ;
 	std::string              field     ;
 	std::stringstream        lineStream;
@@ -91,24 +90,28 @@ IpsetRestore::IpsetRestore( const std::stringstream& consensusIn, const std::str
 
 
 		// write add lines in the ipset format
-		// add [setName] [ip],tcp:[port]
+		// add [setName] [ip]:[port]
+		// tor uses tcp and ipset defaults to tcp, so we won't put it in
+		// fields 6 and 7 are the port fields, so if it's port 0, don't bother
 		//
-		hold.clear();
-		hold.append( "add ").append( setName ).append( " " ).append( fields[ 5 ] ).append( ",tcp:" ).append( fields[ 6 ] ).append( " -exist\n" );
+		for( int i = 6; i <= 7; ++i )
+		{
+			if( fields[ i ] == "0" )
 
-		if( fields[ 6 ] != "0" )
-
-			_set.append( hold );
+				continue;
 
 
-		// second port
-		//
-		hold.clear();
-		hold.append( "add ").append( setName ).append( " " ).append( fields[ 5 ] ).append( ",tcp:" ).append( fields[ 7 ] ).append( " -exist\n" );
-
-		if( fields[ 7 ] != "0" )
-
-			_set.append( hold );
+			_set.append
+			(
+				std::string( "add "      )
+				.append    ( setName     )
+				.append    ( " "         )
+				.append    ( fields[ 5 ] )
+				.append    ( ":"         )
+				.append    ( fields[ i ] )
+				.append    ( " -exist\n" )
+			);
+		}
 	}
 
 
@@ -119,14 +122,6 @@ IpsetRestore::IpsetRestore( const std::stringstream& consensusIn, const std::str
 		++_errorCode;
 	}
 }
-
-
-/// Destructor.
-
-IpsetRestore::~IpsetRestore()
-{
-}
-
 
 
 } 			// namespace torset
