@@ -36,21 +36,29 @@ Installation
 6. sudo make install
 
 If you want a tarball, you can run "make distcheck". This tarball no longer requires automake and you can just install by:
+
 1. ./configure
 2. sudo make install
 
-If you want to uninstall, run "sudo make uninstall".
+
+Uninstallation
+==============
+
+Run "sudo make uninstall".
 
 
 Usage
 =====
 running torset will tell you:
 
+```
 torset  : create or update an ipset from a tor microdescriptor consensus file.
 Version : 2015.02.14.BETA
 Usage   : torset setname [ consensusFile ] | sudo ipset restore
 
-consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus' in which case torset will require root privileges.
+consensusFile defaults to '/var/lib/tor/cached-microdesc-consensus'
+in which case torset will require root privileges.
+```
 
 
 
