@@ -35,8 +35,11 @@ Installation
 5. ./configure
 6. sudo make install
 
-If you want a tarball, you can run "make distcheck"
-If you want to uninstall, run "sudo make uninstall"
+If you want a tarball, you can run "make distcheck". This tarball no longer requires automake and you can just install by:
+1. ./configure
+2. sudo make install
+
+If you want to uninstall, run "sudo make uninstall".
 
 
 Usage
