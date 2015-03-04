@@ -97,8 +97,8 @@ int main( int argc, char* argv[] )
 	toRestore
 
 		.append( "create "   ).append( setName    ).append( " hash:ip,port -exist\n" )                // create set
-		.append( "destroy "  ).append( tmpSetName ).append( "\n" )                                    // delete the temporary set
-		.append( "create "   ).append( tmpSetName ).append( " hash:ip,port\n" )                       // create temporary set
+		.append( "create "   ).append( tmpSetName ).append( " hash:ip,port -exist\n" )                // create temporary set
+		.append( "flush "    ).append( tmpSetName ).append( "\n" )                                    // make sure the temporary set is empty
 		.append( ipset.set() )                                                                        // add the ip's to the temporary set
 		.append( "swap "     ).append( setName    ).append( " " ).append( tmpSetName ).append( "\n" ) // swap the two sets over
 		.append( "destroy "  ).append( tmpSetName ).append( "\n" )                                    // delete the temporary set
