@@ -107,7 +107,7 @@ IpsetRestore::IpsetRestore( const std::stringstream& consensusIn, const std::str
 				.append    ( setName     )
 				.append    ( " "         )
 				.append    ( fields[ 5 ] )
-				.append    ( ":"         )
+				.append    ( ","         )
 				.append    ( fields[ i ] )
 				.append    ( " -exist\n" )
 			);
