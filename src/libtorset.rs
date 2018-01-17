@@ -12,6 +12,7 @@ pub use nftables       ::*;
 
 
 use regex::Regex;
+use std::io::Read;
 
 
 // The interface:
@@ -59,6 +60,35 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 
 	Ok( out )
 }
+
+
+
+pub fn read_descriptors( file: Option< &str > ) -> Result< String, failure::Error >
+{
+	let path;
+
+	if let Some( x ) = file { path = x                                         }
+	else                    { path = "/var/lib/tor/cached-microdesc-consensus" }
+
+
+	// let path = "resources/sample_consensus";
+
+	// Open the path in read-only mode, returns `io::Result<File>`
+	//
+	let mut file = std::fs::File::open( path )?;
+
+
+	// Read the file contents into a string, returns `io::Result<usize>`
+	// We set the starting size to 2MB here, so we avoid reallocation while reading from the file.
+	//
+	let mut buffer = String::with_capacity( 2000000 );
+	file.read_to_string( &mut buffer )?;
+
+	Ok( buffer )
+}
+
+
+
 
 
 #[ cfg( test ) ]
