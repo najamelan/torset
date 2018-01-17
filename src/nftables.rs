@@ -19,15 +19,7 @@ pub fn nft_plain( input: &Vec< MicroDescriptor > ) -> String
 	//
 	let mut out = String::with_capacity( 160000 );
 
-
-	for desc in input.into_iter()
-	{
-		out += &( format!( "{}", desc.ip ) + " . " + &format!( "{}", desc.orport  ) + "," );
-
-		if desc.dirport == 0 { continue; }
-
-		out += &( format!( "{}", desc.ip ) + " . " + &format!( "{}", desc.dirport ) + "," );
-	}
+	listem( input, &mut out );
 
 	out
 }
@@ -43,11 +35,28 @@ pub fn nft_var( input: &Vec< MicroDescriptor > ) -> String
 	let mut out = String::with_capacity( 160000 );
 
 	out += "define torset = {" ;
-	out += &nft_plain( input ) ;
+
+	listem( input, &mut out )  ;
+
 	out += "};\n"              ;
 
 
 	out
+}
+
+
+
+#[ inline ]
+fn listem( input: &Vec< MicroDescriptor >, out: &mut String )
+{
+	for desc in input.into_iter()
+	{
+		*out += &( format!( "{}", desc.ip ) + " . " + &format!( "{}", desc.orport  ) + "," );
+
+		if desc.dirport == 0 { continue; }
+
+		*out += &( format!( "{}", desc.ip ) + " . " + &format!( "{}", desc.dirport ) + "," );
+	}
 }
 
 
