@@ -195,7 +195,7 @@ dependencies = [
 
 [[package]]
 name = "torset"
-version = "0.1.0"
+version = "18.9.4"
 dependencies = [
  "chrono 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
