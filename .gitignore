@@ -25,3 +25,5 @@
 /torset
 /torset*.tar.gz
 /src/torset.hpp.gch
+target
+resources
