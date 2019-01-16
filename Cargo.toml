@@ -3,6 +3,7 @@
 	name    = "torset"
 	version = "18.9.4"
 	authors = [ "Naja Melan" ]
+	edition = "2018"
 
 
 [lib]

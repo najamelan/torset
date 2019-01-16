@@ -2,7 +2,9 @@ use std::str::FromStr;
 use std::net::Ipv4Addr;
 
 use chrono::prelude::*;
-use ::*;
+use failure::ensure;
+
+
 
 // MicroDescriptor - Currently only parse the 'r' line of the consensus file which holds
 // the ip adress and ports for each relay.

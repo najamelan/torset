@@ -8,7 +8,7 @@
 // However we can add additional methods that wrap it up into a complete nftables file, and even write it to disk if you like.
 //
 //
-use ::*;
+use crate::microdescriptor::MicroDescriptor;
 
 
 // Create a comma separated list of ip . port entries to put in a nftables set

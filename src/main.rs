@@ -1,5 +1,3 @@
-extern crate libtorset;
-
 use libtorset::*;
 
 

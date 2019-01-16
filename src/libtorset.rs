@@ -1,9 +1,3 @@
-#[macro_use] pub extern crate failure;
-#[macro_use] extern crate lazy_static;
-
-extern crate chrono ;
-extern crate regex  ;
-
 mod microdescriptor;
 mod nftables;
 
@@ -11,6 +5,8 @@ pub use microdescriptor::*;
 pub use nftables       ::*;
 
 
+use lazy_static::lazy_static;
+use failure::ensure;
 use regex::Regex;
 use std::io::Read;
 
