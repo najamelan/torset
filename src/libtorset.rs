@@ -13,6 +13,8 @@ use failure::{ ensure, ResultExt };
 use regex::Regex;
 use std::fs::read_to_string;
 use log::{error};
+use std::io;
+use std::io::Read;
 
 const DEFAULT_INPUT_FILE: &str =  "/var/lib/tor/cached-microdesc-consensus";
 
@@ -71,11 +73,16 @@ pub fn read_descriptors( file: Option< &str > ) -> Result< String, failure::Erro
 	if let Some( f ) = file { path = String::from( f                  ) }
 	else                    { path = String::from( DEFAULT_INPUT_FILE ) }
 
+	let mut buffer = String::new();
 
+	if path == "stdin"
+	{
+		io::stdin().read_to_string( &mut buffer ).context( "Reading from stdin" )?;
+	}
 	// Read the file contents into a string, returns `io::Result<usize>`
 	// We set the starting size to 2MB here, so we avoid reallocation while reading from the file.
 	//
-	let buffer = read_to_string( &path ).context( path )?;
+	else { buffer = read_to_string( &path ).context( path )? }
 
 	Ok( buffer )
 }

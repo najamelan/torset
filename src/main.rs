@@ -2,9 +2,11 @@ use libtorset::*;
 
 use std::process;
 use std::result;
-
+use std::fs::write;
 use clap::{ App, Arg, ArgMatches, SubCommand, AppSettings, crate_version, crate_authors };
 use env_logger;
+use failure::{ ResultExt };
+
 
 /// Our type alias for handling errors throughout torset.
 ///
@@ -87,7 +89,23 @@ fn try_main() -> Result<()>
 		_ => { out = "".to_string() /*TODO: handle error*/ }
 	}
 
-	print!( "{}", out );
+
+	match args.value_of( "output" )
+	{
+		Some( "stdout" ) => { print!       ( "{}", out  )  },
+		Some( "stderr" ) => { eprint!      ( "{}", out  )  },
+		Some( file     ) => { print_to_file( file, &out )? },
+
+		None             => panic!( "No output specified, but we have a default value of stdout, so this shouln't happen." )
+	}
+
+	Ok(())
+}
+
+
+fn print_to_file( file: &str, out: &String ) -> Result<()>
+{
+	write( file, out ).context( file.to_string() )?;
 
 	Ok(())
 }
