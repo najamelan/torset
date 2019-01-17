@@ -1,8 +1,10 @@
 mod microdescriptor;
 mod nftables;
+mod ipset;
 
 pub use microdescriptor::*;
-pub use nftables       ::*;
+pub use nftables       ::nft_var;
+pub use ipset          ::ipset;
 
 
 use lazy_static::lazy_static;
