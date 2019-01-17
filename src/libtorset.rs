@@ -1,6 +1,7 @@
 mod microdescriptor;
 mod nftables;
 mod ipset;
+// mod errors;
 
 pub use microdescriptor::*;
 pub use nftables       ::nft_var;
@@ -8,10 +9,11 @@ pub use ipset          ::ipset;
 
 
 use lazy_static::lazy_static;
-use failure::ensure;
+use failure::{ ensure, ResultExt };
 use regex::Regex;
-use std::io::Read;
+use std::fs::read_to_string;
 
+const DEFAULT_INPUT_FILE: &str =  "/var/lib/tor/cached-microdesc-consensus";
 
 // The interface:
 //
@@ -52,7 +54,7 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 	//
 	if cfg!( debug_assertions ) && counter != 0
 	{
-		print!("Number of microdescriptor lines that failed to parse: {:?}\n", counter );
+		print!( "Number of microdescriptor lines that failed to parse: {:?}\n", counter );
 	}
 
 
@@ -65,22 +67,14 @@ pub fn read_descriptors( file: Option< &str > ) -> Result< String, failure::Erro
 {
 	let path;
 
-	if let Some( x ) = file { path = x                                         }
-	else                    { path = "/var/lib/tor/cached-microdesc-consensus" }
-
-
-	// let path = "resources/sample_consensus";
-
-	// Open the path in read-only mode, returns `io::Result<File>`
-	//
-	let mut file = std::fs::File::open( path )?;
+	if let Some( f ) = file { path = String::from( f                  ) }
+	else                    { path = String::from( DEFAULT_INPUT_FILE ) }
 
 
 	// Read the file contents into a string, returns `io::Result<usize>`
 	// We set the starting size to 2MB here, so we avoid reallocation while reading from the file.
 	//
-	let mut buffer = String::with_capacity( 2000000 );
-	file.read_to_string( &mut buffer )?;
+	let buffer = read_to_string( &path ).context( path )?;
 
 	Ok( buffer )
 }
