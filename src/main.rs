@@ -4,7 +4,7 @@ use std::process;
 use std::result;
 
 use clap::{ App, Arg, ArgMatches, SubCommand, AppSettings, crate_version, crate_authors };
-
+use env_logger;
 
 /// Our type alias for handling errors throughout torset.
 ///
@@ -17,6 +17,8 @@ const DEFAULT_INPUT  : &str = "/var/lib/tor/cached-microdesc-consensus";
 
 fn main()
 {
+	env_logger::init();
+
 	if let Err( err ) = try_main()
 	{
 		// Print the error, including all of its underlying causes.
@@ -95,6 +97,7 @@ fn try_main() -> Result<()>
 ///
 fn pretty_error( err: &failure::Error ) -> String
 {
+
     let mut pretty = err.to_string();
     let mut prev   = err.as_fail  ();
 

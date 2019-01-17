@@ -12,6 +12,7 @@ use lazy_static::lazy_static;
 use failure::{ ensure, ResultExt };
 use regex::Regex;
 use std::fs::read_to_string;
+use log::{error};
 
 const DEFAULT_INPUT_FILE: &str =  "/var/lib/tor/cached-microdesc-consensus";
 
@@ -38,7 +39,7 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 			out.push( parsed );
 		}
 
-		else if cfg!( debug_assertions )
+		else
 		{
 			counter += 1;
 		}
@@ -52,9 +53,9 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 
 	// Get some feedback about whether we get in a lot of lines that fail to parse.
 	//
-	if cfg!( debug_assertions ) && counter != 0
+	if counter != 0
 	{
-		print!( "Number of microdescriptor lines that failed to parse: {:?}\n", counter );
+		error!( "ERROR: Number of microdescriptor lines that failed to parse: {:?}\n", counter );
 	}
 
 
