@@ -5,6 +5,7 @@ mod ipset;
 
 pub use microdescriptor::*;
 pub use nftables       ::nft_var;
+pub use nftables       ::nft_plain;
 pub use ipset          ::ipset;
 
 
