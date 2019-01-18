@@ -148,7 +148,7 @@ fn arguments() -> ArgMatches< 'static >
 		.version( crate_version!() )
 		.about  ( "Generate or update an ipset or an nftables set of tornodes from the cached microdescriptor file." )
 		.setting( AppSettings::SubcommandRequiredElseHelp )
-		.usage  ( "torset help [subcommand]\n             torset ipset <setname> [options] | ipset\n             torset nftables        [options] > /etc/tornodes.conf")
+		.usage  ( "torset help [subcommand]\n             torset ipset    [set_name] [OPTIONS] | ipset\n             torset nftables [var_name] [OPTIONS] > /etc/tornodes.conf")
 		.template
 		(
 "
@@ -190,7 +190,7 @@ description: {bin} allows you to create firewall rules based on tor node ip addr
 					.display_order( 1 )
 				)
 
-				.usage( "torset ipset <set_name> [OPTIONS]")
+				.usage( "torset ipset [set_name] [OPTIONS]")
 
 		)
 
@@ -212,7 +212,7 @@ description: {bin} allows you to create firewall rules based on tor node ip addr
 					.display_order( 1 )
 				)
 
-				.usage( "torset nftables <var_name> [OPTIONS]")
+				.usage( "torset nftables [var_name] [OPTIONS]")
 
 		)
 

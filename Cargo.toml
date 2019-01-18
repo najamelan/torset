@@ -1,8 +1,8 @@
 [package]
 
 	name    = "torset"
-	version = "18.9.4"
-	authors = [ "Naja Melan" ]
+	version = "19.1.19"
+	authors = [ "Naja Melan <najamelan on autistici.org>" ]
 	edition = "2018"
 
 
