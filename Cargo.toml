@@ -1,0 +1,29 @@
+[package]
+
+	name    = "torset"
+	version = "19.1.19"
+	authors = [ "Naja Melan <najamelan on autistici.org>" ]
+	edition = "2018"
+
+
+[lib]
+
+	name = "libtorset"
+	path = "src/libtorset.rs"
+
+
+[[bin]]
+
+	name = "torset"
+	path = "src/main.rs"
+
+
+[dependencies]
+
+	failure     = ">= 0.1.1"
+	chrono      = ">= 0.4.0"
+	regex       = ">= 0.2.5"
+	lazy_static = ">= 1"
+	clap        = ">= 2"
+	env_logger  = ">= 0.6"
+	log         = ">= 0.4"
