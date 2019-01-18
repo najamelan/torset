@@ -15,6 +15,13 @@ After compilation this program doesn't require you to install any scripting lang
 
 **If you can't compile rust, check out the C++ branch of this repository. It only supports ipset, not nftables.**
 
+libtorset
+=========
+
+The crate is split between a library and a cli frontend, so if you need microdescriptor parsing, you can link against the library to read all fields of the microdescritor. Just add it as a dependency in your toml file.
+
+Then just import: `use libtorset::microdescriptor::MicroDescriptor;`
+
 
 Requirements
 ============
