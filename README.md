@@ -11,6 +11,8 @@ Torset generates a restore file for ipset which you can then pipe to ipset. You 
 
 For nftables, a variable with the set is generated. You can store that in a file to be included in your nftables configuration.
 
+After compilation this program doesn't require you to install any scripting languages like python, so it can be a good option for installation on routers. It performant as well.
+
 **If you can't compile rust, check out the C++ branch of this repository. It only supports ipset, not nftables.**
 
 
@@ -35,15 +37,17 @@ Setup the required tools:
 1. `git clone https://github.com/najamelan/torset.git` OR download the zip file from github
 2. `git checkout master`                               OR extract  the zip file
 3. `cd torset`
-4. `sudo cargo make install`
+4. `cargo make install`
 
-Now you can deploy the binary version as long as you don't change architecture. Don't forget to deploy the man page. You can cross compile to a whole series of targets with rust.
+`cargo make install` will prompt for your password as it uses sudo. It will install to /usr/local/bin. It will also require internet access to download rust dependencies.
+
+Now you can deploy the binary version as long as you don't change architecture. You can find it in the folder `target/release/`Don't forget to deploy the man page. You can cross compile to a whole series of targets with rust.
 
 
 Uninstallation
 ==============
 
-Run "sudo make uninstall".
+Run `cargo make uninstall`.
 
 
 Usage
@@ -100,8 +104,8 @@ torset.service:
 
     Type            = oneshot
     RemainAfterExit = true
-    ExecStart       = /usr/bin/sh -c "set -o pipefail; exec torset tornodes | ipset restore"
-    ExecReload      = /usr/bin/sh -c "set -o pipefail; exec torset tornodes | ipset restore"
+    ExecStart       = /usr/bin/sh -c "set -o pipefail && /usr/local/bin/torset ipset tornodes --ports | ipset restore"
+    ExecReload      = /usr/bin/sh -c "set -o pipefail && /usr/local/bin/torset ipset tornodes --ports | ipset restore"
     ExecStop        = /usr/bin/ipset destroy tornodes
     StandardError   = journal+console
 

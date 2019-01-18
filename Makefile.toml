@@ -1,0 +1,31 @@
+[tasks.install]
+
+	description = "Installs torset in /usr/local/bin."
+
+	script = [
+
+	  "cargo build --release",
+	  "echo Installing in /usr/local/bin",
+		"sudo mkdir -p /usr/local/bin",
+		"sudo cp -f target/release/torset /usr/local/bin",
+		"sudo chmod 755 /usr/local/bin/torset",
+		"sudo mkdir -p /usr/local/share/man/man1",
+		"sudo cp -f doc/torset.1 /usr/local/share/man/man1/",
+		"sudo gzip /usr/local/share/man/man1/torset.1",
+	]
+
+
+[tasks.remove]
+
+	alias = "uninstall"
+
+
+[tasks.uninstall]
+
+	description = "Installs torset in /usr/local/bin."
+
+	script = [
+
+		"sudo rm -f /usr/local/bin/torset",
+		"sudo rm -f /usr/local/share/man/man1/torset.1.gz",
+	]
