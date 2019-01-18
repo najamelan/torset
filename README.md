@@ -11,13 +11,15 @@ Torset generates a restore file for ipset which you can then pipe to ipset. You 
 
 For nftables, a variable with the set is generated. You can store that in a file to be included in your nftables configuration.
 
+**If you can't compile rust, check out the C++ branch of this repository. It only supports ipset, not nftables.**
+
 
 Requirements
 ============
 
 You will need:
-- make
 - rust compiler
+- cargo-make
 - an up-to-date cached-microdesc-consensus file, usually available if you run tor.
 
 
@@ -30,10 +32,12 @@ Setup the required tools:
 1. [Install Rust](https://www.rust-lang.org/tools/install)
 2. Install cargo make: `cargo install cargo-make`
 
-1. git clone https://github.com/najamelan/torset.git OR download the zip file from github
-2. git checkout master                               OR extract  the zip file
-3. cd torset
-4. sudo cargo make install
+1. `git clone https://github.com/najamelan/torset.git` OR download the zip file from github
+2. `git checkout master`                               OR extract  the zip file
+3. `cd torset`
+4. `sudo cargo make install`
+
+Now you can deploy the binary version as long as you don't change architecture. Don't forget to deploy the man page. You can cross compile to a whole series of targets with rust.
 
 
 Uninstallation
@@ -144,6 +148,8 @@ Bugs and limtations
 ===================
 
 Hopefully no bugs... It is currently not configurable which type of ipset is created. It will be hash:ip,port or hash:ip, depending on whether you want ports or not, but that should be the best choice for most users.
+
+Please report any bugs to http://github.com/najamelan/torset/issues
 
 
 Licence
