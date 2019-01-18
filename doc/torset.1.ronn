@@ -1,0 +1,70 @@
+torset(1) -- generate an ipset or an nftables variable containing all tor nodes
+===============================================================================
+
+## SYNOPSIS
+
+`torset` help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[subcommand]  
+`torset` ipset&nbsp;&nbsp;&nbsp;&nbsp;[set_name] [OPTIONS] | ipset restore  
+`torset` nftables&nbsp;[var_name] [OPTIONS] > /etc/nftables/tornodes.conf  
+
+## DESCRIPTION
+
+**torset** creates an ipset or an nftables variable containing all tor nodes, for use in firewalls. If you want to transparently reroute traffic through tor, you would create a firewall rule to make sure no other outgoing connections get through, and you would not want to reroute traffic that already connects to tor, to avoid double torifying.
+
+With the help of the set generated from torset you can do this in the most common firewalls on linux. Firehol does not support ipsets with ports, so if you don't want to bother modifying the iptables rules, you can still generate an ipset without the --ports option to get ip addresses only.
+
+torset does not generate ip6 sets.
+
+
+## FILES
+
+**torset** requires a valid `cached-microdesc-consensus` file as input. You can either specify a file, pipe it to stdin or let torset read the default `/var/lib/tor/cached-microdesc-consensus` file present on your system if you have tor running. If you don't have tor installed, you might have a look at stem in order to download a descriptor file.
+
+## OPTIONS
+
+  The first argument after the subcommand can be a set_name for ipset or a var_name for nftables:
+
+  * **set_name**:
+    the set created by ipset will be `create set_name hash:ip,port -exist` (if --ports is used)  
+    defaults to `tornodes`
+
+  * **var_name**:
+    the variable created for nftables will be `define var_name = {...};`.  
+    defaults to `tornodes`
+
+  * `-h`, `--help`:
+    Prints help information
+
+  * `-i`, `--input` <filename>:
+    Where to read the consensus file from. Note that the default value usually requires torset to be run as root. If you don't want torset to run as root, you can pipe to stdin. This options accepts the special value: 'stdin'.  [default: /var/lib/tor/cached-microdesc-consensus]
+
+  * `-o`, `--output` <filename>:
+    Where to send the results. Special values accepted: 'stdout' and 'stderr' [default: stdout]
+
+  * `-p`, `--ports`:
+    Mmake a set with both ip addresses and ports. [default: off]
+
+  * `-V`, `--version`:
+    Prints version information
+
+## EXAMPLES
+
+  Generate an ipset with ports and pipe it to ipset. Read from `/var/lib/tor/cached-microdesc-consensus`
+
+    sudo torset ipset --ports | sudo ipset restore
+
+  Run without root:
+
+    sudo cat /var/lib/tor/cached-microdesc-consensus | torset ipset --ports --input stdin | sudo ipset restore
+
+## BUGS
+
+Please report any bugs to http://github.com/najamelan/torset
+
+## COPYRIGHT
+
+Torset is Unlicense (https://unlicense.org/)
+
+## SEE ALSO
+
+ipset(1), nft(8)

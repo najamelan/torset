@@ -50,13 +50,14 @@ running torset will tell you:
 torset     : Generate or update an ipset or an nftables set of tornodes from the cached microdescriptor file.
 version    : 19.1.19 (by Naja Melan <najamelan on autistici.org>)
 
-usage      : torset help [subcommand]
-             torset ipset    [set_name] [OPTIONS] | ipset
+usage      : torset help     [subcommand]
+             torset ipset    [set_name] [OPTIONS] | ipset restore
              torset nftables [var_name] [OPTIONS] > /etc/tornodes.conf
 
-description: torset allows you to create firewall rules based on tor node ip addresses. Eg. If you want to transparently
-             reroute traffic through tor, you would create a firewall rule to make sure no other outgoing connections
-             get through, and you would not want to reroute traffic that already connects to tor, to avoid double torifying.
+description: torset creates an ipset or an nftables variable containing all tor nodes, for use in firewalls.you
+             If you want to transparently reroute traffic through tor, you would create a firewall rule to make
+             sure no other outgoing connections get through, and you would not want to reroute traffic that already
+             connects to tor, to avoid double torifying.
 
              With the help of the set generated from torset you can do this in the most common firewalls on linux. Firehol does
              not support ipsets with ports, so if you don't want to bother modifying the iptables rules, you can still generate
@@ -70,12 +71,73 @@ description: torset allows you to create firewall rules based on tor node ip add
 
     -h, --help                 Prints help information
     -i, --input <filename>     Where to read the consensus file from. Note that the default value usually requires
-                               torset to be run as root. Special value accepted: 'stdin'. If you don't want torset to
-                               run as root, you can pipe to stdin. [default: /var/lib/tor/cached-microdesc-consensus]
+                               torset to be run as root. If you don't want torset to run as root, you can pipe to stdin.
+                               Special value accepted: 'stdin'.  [default: /var/lib/tor/cached-microdesc-consensus]
     -o, --output <filename>    Where to send the results. Special values accepted: 'stdout' and 'stderr' [default:
                                stdout]
     -p, --ports                Whether to make a set with both ip addresses and ports
     -V, --version              Prints version information
+```
+
+Systemd
+=======
+You can ofcourse run torset as a service. Here are some example unit files:
+
+
+torset.service:
+```ini
+[Unit]
+
+    Description         = Creates the ipset of tor nodes
+    DefaultDependencies = false
+
+
+[Service]
+
+    Type            = oneshot
+    RemainAfterExit = true
+    ExecStart       = /usr/bin/sh -c "set -o pipefail; exec torset tornodes | ipset restore"
+    ExecReload      = /usr/bin/sh -c "set -o pipefail; exec torset tornodes | ipset restore"
+    ExecStop        = /usr/bin/ipset destroy tornodes
+    StandardError   = journal+console
+
+[Install]
+
+    RequiredBy      = firehol.service
+```
+
+torset-watch.path:
+```ini
+[Unit]
+
+    Description = Watching /var/lib/cached-microdesc-consensus for changes (to restart torset.service).
+
+
+[Path]
+
+    PathChanged = /var/lib/tor/cached-microdesc-consensus
+    Unit        = torset-watch.service
+
+[Install]
+
+    WantedBy    = torset.service
+```
+
+torset-watch.service:
+```ini
+[Unit]
+
+    Description = torset-watch.service: Relaunch torset if the cached microdescriptor file changes.
+
+
+[Service]
+
+    Type        = oneshot
+    ExecStart   = /usr/bin/systemctl reload torset.service
+
+[Install]
+
+    WantedBy    = torset.service
 ```
 
 Bugs and limtations

@@ -148,7 +148,7 @@ fn arguments() -> ArgMatches< 'static >
 		.version( crate_version!() )
 		.about  ( "Generate or update an ipset or an nftables set of tornodes from the cached microdescriptor file." )
 		.setting( AppSettings::SubcommandRequiredElseHelp )
-		.usage  ( "torset help [subcommand]\n             torset ipset    [set_name] [OPTIONS] | ipset\n             torset nftables [var_name] [OPTIONS] > /etc/tornodes.conf")
+		.usage  ( "torset help     [subcommand]\n             torset ipset    [set_name] [OPTIONS] | ipset restore\n             torset nftables [var_name] [OPTIONS] > /etc/tornodes.conf")
 		.template
 		(
 "
@@ -157,9 +157,10 @@ version    : {version} (by {author})
 
 usage      : {usage}
 
-description: {bin} allows you to create firewall rules based on tor node ip addresses. Eg. If you want to transparently
-             reroute traffic through tor, you would create a firewall rule to make sure no other outgoing connections
-             get through, and you would not want to reroute traffic that already connects to tor, to avoid double torifying.
+description: {bin} creates an ipset or an nftables variable containing all tor nodes, for use in firewalls.you
+             If you want to transparently reroute traffic through tor, you would create a firewall rule to make
+             sure no other outgoing connections get through, and you would not want to reroute traffic that already
+             connects to tor, to avoid double torifying.
 
              With the help of the set generated from torset you can do this in the most common firewalls on linux. Firehol does
              not support ipsets with ports, so if you don't want to bother modifying the iptables rules, you can still generate
@@ -190,7 +191,7 @@ description: {bin} allows you to create firewall rules based on tor node ip addr
 					.display_order( 1 )
 				)
 
-				.usage( "torset ipset [set_name] [OPTIONS]")
+				.usage( "torset ipset [set_name] [OPTIONS] | ipset restore")
 
 		)
 
@@ -212,7 +213,7 @@ description: {bin} allows you to create firewall rules based on tor node ip addr
 					.display_order( 1 )
 				)
 
-				.usage( "torset nftables [var_name] [OPTIONS]")
+				.usage( "torset nftables [var_name] [OPTIONS] > /etc/nftables/tornodes.conf" )
 
 		)
 
@@ -221,7 +222,7 @@ description: {bin} allows you to create firewall rules based on tor node ip addr
 		(
 			Arg::with_name( "input"  )
 
-				.help ( "Where to read the consensus file from. Note that the default value usually requires torset to be run as root. Special value accepted: 'stdin'. If you don't want torset to run as root, you can pipe to stdin." )
+				.help ( "Where to read the consensus file from. Note that the default value usually requires torset to be run as root. If you don't want torset to run as root, you can pipe to stdin. Special value accepted: 'stdin'. " )
 				.long ( "input" )
 				.short( "i"     )
 				.value_name( "filename" )
