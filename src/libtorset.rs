@@ -31,7 +31,7 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 	let mut out    : Vec< MicroDescriptor > = Vec::with_capacity( 6300 );
 	let mut counter: usize = 0;
 
-	lazy_static! { static ref RE: Regex = Regex::new( r"^r " ).unwrap(); }
+	lazy_static! { static ref RE: Regex = Regex::new( r"^r " ).expect( "The regular expression is invalid" ); }
 
 
 	for line in input.lines().filter( |l| RE.is_match( l ) )

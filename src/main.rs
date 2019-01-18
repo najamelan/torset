@@ -69,7 +69,12 @@ fn try_main() -> Result<()>
 				ipset
 				(
 					  &parsed
-					, args.subcommand_matches( "ipset" ).unwrap().value_of( "set_name" ).unwrap()
+
+					, args.subcommand_matches( "ipset" )
+					      .expect( "CLI: No subcommand matches? Error in the clap library?" )
+					      .value_of( "set_name" )
+					      .expect( "CLI: No set_name value, even though we have a default? Error in the clap library?" )
+
 					, args.is_present( "ports" )
 				)
 		},
@@ -81,7 +86,12 @@ fn try_main() -> Result<()>
 				nft_var
 				(
 					  &parsed
-					, args.subcommand_matches( "nftables" ).unwrap().value_of( "var_name" ).unwrap()
+
+					, args.subcommand_matches( "nftables" )
+					      .expect( "CLI: No subcommand matches? Error in the clap library?" )
+					      .value_of( "var_name" )
+					      .expect( "CLI: No var_name value, even though we have a default? Error in the clap library?" )
+
 					, args.is_present( "ports" )
 				)
 		},
