@@ -1,4 +1,4 @@
-Introduction [![Build Status](https://travis-ci.org/najamelan/torset.svg?branch=master)](https://travis-ci.org/najamelan/torset)
+Introduction [![Build Status](https://travis-ci.org/najamelan/torset.svg?branch=master)](https://travis-ci.org/najamelan/torset)[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 ============
 
 Tor is a great tool. You might want to create routers or servers which filter all passing traffic and send it through tor. On linux systems this can be done by creating the appropriate iptables rules. However one problem might arise: if users behind the firewall are already using tor/tails, their connections shouldn't be torified twice.
