@@ -113,7 +113,7 @@ fn try_main() -> Result<()>
 }
 
 
-fn print_to_file( file: &str, out: &String ) -> Result<()>
+fn print_to_file( file: &str, out: &str ) -> Result<()>
 {
 	write( file, out ).context( file.to_string() )?;
 

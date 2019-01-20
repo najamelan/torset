@@ -129,7 +129,7 @@ impl MicroDescriptor
 		//
 		ensure!( split.len() == 8, "Microdescriptor line does not contain 8 fields: {}", input );
 
-		let date         = Utc.datetime_from_str( &( split[ 3 ].to_owned() + split[ 4 ] ), "%Y-%m-%d%H:%M:%S" )?;
+		let publication  = Utc.datetime_from_str( &( split[ 3 ].to_owned() + split[ 4 ] ), "%Y-%m-%d%H:%M:%S" )?;
 		let ip           = Ipv4Addr::from_str   (    split[ 5 ]                                               )?;
 		let orport : u32 = split[ 6 ].parse()?;
 		let dirport: u32 = split[ 7 ].parse()?;
@@ -140,10 +140,10 @@ impl MicroDescriptor
 			{
 				nickname   : split[ 1 ].to_owned(),
 				identifier : split[ 2 ].to_owned(),
-				publication: date                 ,
-				ip         : ip                   ,
-				orport     : orport               ,
-				dirport    : dirport              ,
+				publication                       ,
+				ip                                ,
+				orport                            ,
+				dirport                           ,
 			}
 		)
 	}

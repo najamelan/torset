@@ -13,12 +13,12 @@ use super::MicroDescriptor;
 
 // Create valid ipset to be piped to the ipset command
 //
-pub fn ipset( data: &Vec< MicroDescriptor >, set_name: &str, ports: bool ) -> String
+pub fn ipset( data: &[ MicroDescriptor ], set_name: &str, ports: bool ) -> String
 {
 
 	// We count on +/- 11000 relays/port combinations (beginning 2019) times max length of an entry ("add tornodes xxx.xxx.xxx.xxx,xxxxx -exists\n") +/- 50 bytes = 550000 bytes
 	//
-	let mut out  = String::with_capacity( 600000 );
+	let mut out  = String::with_capacity( 600_000 );
 	let tmp_name = &format!( "tmp_{}", set_name );
 
 	out += &create_set( set_name, ports );
@@ -47,7 +47,7 @@ fn create_set( set_name: &str, ports: bool ) -> String
 
 #[inline]
 //
-fn add_ips( out: &mut String, set_name: &str, data: &Vec< MicroDescriptor >, ports: bool )
+fn add_ips( out: &mut String, set_name: &str, data: &[ MicroDescriptor ], ports: bool )
 {
 	if ports
 	{

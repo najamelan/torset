@@ -13,11 +13,11 @@ use crate::microdescriptor::MicroDescriptor;
 
 // Create a comma separated list of ip . port entries to put in a nftables set
 //
-pub fn nft_plain( data: &Vec< MicroDescriptor >, ports: bool ) -> String
+pub fn nft_plain( data: &[ MicroDescriptor ], ports: bool ) -> String
 {
 	// We count on +/- 6300 relays (beginning 2018) times max length of an entry (xxx.xxx.xxx.xxx . xxxxx,) 24 bytes = 151200 bytes
 	//
-	let mut out = String::with_capacity( 160000 );
+	let mut out = String::with_capacity( 160_000 );
 
 
 	if ports
@@ -41,11 +41,11 @@ pub fn nft_plain( data: &Vec< MicroDescriptor >, ports: bool ) -> String
 
 // Create valid nftables variable statement that can be send to a file for inclusion or to nft on the command line.
 //
-pub fn nft_var( input: &Vec< MicroDescriptor >, var_name: &str, ports: bool ) -> String
+pub fn nft_var( input: &[ MicroDescriptor ], var_name: &str, ports: bool ) -> String
 {
 	// We count on +/- 6300 relays (beginning 2018) times max length of an entry (xxx.xxx.xxx.xxx . xxxxx,) 24 bytes = 151200 bytes
 	//
-	let mut out = String::with_capacity( 180000 );
+	let mut out = String::with_capacity( 180_000 );
 
 	out += &format!( "define {} = {{", var_name );
 	out += &nft_plain( input, ports )            ;

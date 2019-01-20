@@ -9,9 +9,7 @@ pub use nftables       ::nft_plain;
 pub use ipset          ::ipset;
 
 
-use lazy_static::lazy_static;
 use failure::{ ensure, ResultExt };
-use regex::Regex;
 use std::fs::read_to_string;
 use log::{error};
 use std::io;
@@ -32,10 +30,7 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 	let mut out    : Vec< MicroDescriptor > = Vec::with_capacity( 6300 );
 	let mut counter: usize = 0;
 
-	lazy_static! { static ref RE: Regex = Regex::new( r"^r " ).expect( "The regular expression is invalid" ); }
-
-
-	for line in input.lines().filter( |l| RE.is_match( l ) )
+	for line in input.lines().filter( |l| l.starts_with( "r " ) )
 	{
 		if let Ok( parsed ) = MicroDescriptor::new( line )
 		{
@@ -51,7 +46,7 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 
 	// We do return a result after all.after
 	//
-	ensure!( out.len() != 0, "Could not find any valid microdescriptor in the text passed in." );
+	ensure!( !out.is_empty(), "Could not find any valid microdescriptor in the text passed in." );
 
 
 	// Get some feedback about whether we get in a lot of lines that fail to parse.
