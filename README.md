@@ -18,6 +18,8 @@ After compilation this program doesn't require you to install any scripting lang
 libtorset
 =========
 
+WARNING: This has not at all been written with security in mind. It's not meant to be used on untrusted input. Use at your own risk. It does not however use any unsafes, but it has not been fuzz tested and such...
+
 The crate is split between a library and a cli frontend, so if you need microdescriptor parsing, you can link against the library to read all fields of the microdescritor. Just add it as a dependency in your toml file.
 
 Then just import: `use libtorset::microdescriptor::MicroDescriptor;`

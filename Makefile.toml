@@ -4,14 +4,16 @@
 
 	script = [
 
-	  "cargo build --release",
-	  "echo Installing in /usr/local/bin",
-		"sudo mkdir -p /usr/local/bin",
-		"sudo cp -f target/release/torset /usr/local/bin",
+		"cargo build --release",
+
+		"echo Installing in /usr/local/bin",
+
+		"sudo mkdir --parents /usr/local/bin",
+		"sudo cp    --force target/release/torset /usr/local/bin",
 		"sudo chmod 755 /usr/local/bin/torset",
-		"sudo mkdir -p /usr/local/share/man/man1",
-		"sudo cp -f doc/torset.1 /usr/local/share/man/man1/",
-		"sudo gzip /usr/local/share/man/man1/torset.1",
+		"sudo mkdir --parents /usr/local/share/man/man1",
+		"sudo cp    --force doc/torset.1 /usr/local/share/man/man1/",
+		"sudo gzip  --force /usr/local/share/man/man1/torset.1",
 	]
 
 

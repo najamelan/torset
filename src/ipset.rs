@@ -54,7 +54,7 @@ fn add_ips( out: &mut String, set_name: &str, data: &[ MicroDescriptor ], ports:
 		for desc in data
 		{
 			if desc .orport != 0 { *out += &format!( "add {} {},{} -exist\n", set_name, desc.ip, desc.orport  ) }
-			if desc.dirport != 0	{ *out += &format!( "add {} {},{} -exist\n", set_name, desc.ip, desc.dirport ) }
+			if desc.dirport != 0 { *out += &format!( "add {} {},{} -exist\n", set_name, desc.ip, desc.dirport ) }
 		}
 	}
 

@@ -95,7 +95,7 @@ mod tests
 
 	#[ test ]
 	//
-	fn find2()
+	fn read_descriptor_find2()
 	{
 		let input = "pr Cons=1-2 Desc=1-2 DirCache=1-2 HSDir=1-2 HSIntro=3-4 HSRend=1-2 Link=1-4 LinkAuth=1,3 Microdesc=1-2 Relay=1-2
 w Bandwidth=344
@@ -114,5 +114,17 @@ v Tor 0.3.1.9";
 
 		assert!   ( result.is_ok ()          );
 		assert_eq!( result.unwrap().len(), 2 );
+	}
+
+
+	#[ test ]
+	//
+	fn read_from_file()
+	{
+		let input  = read_descriptors( Some( "data/sample_consensus" ) ).expect( "Can not open file data/sample_consensus" );
+		let result = parse_descriptors( &input );
+
+		assert!   ( result.is_ok ()             );
+		assert_eq!( result.unwrap().len(), 6124 );
 	}
 }

@@ -126,11 +126,12 @@ impl MicroDescriptor
 		let split: Vec< &str > = input.split_whitespace().collect();
 
 		// Validation
+		// Will exit the function with an error. This is necessary to avoid the out of bounds indexing risks below.
 		//
 		ensure!( split.len() == 8, "Microdescriptor line does not contain 8 fields: {}", input );
 
-		let publication  = Utc.datetime_from_str( &( split[ 3 ].to_owned() + split[ 4 ] ), "%Y-%m-%d%H:%M:%S" )?;
-		let ip           = Ipv4Addr::from_str   (    split[ 5 ]                                               )?;
+		let publication  = Utc.datetime_from_str( &( split[ 3 ].to_string() + split[ 4 ] ), "%Y-%m-%d%H:%M:%S" )?;
+		let ip           = Ipv4Addr::from_str   (    split[ 5 ]                                                )?;
 		let orport : u32 = split[ 6 ].parse()?;
 		let dirport: u32 = split[ 7 ].parse()?;
 
@@ -138,12 +139,12 @@ impl MicroDescriptor
 		(
 			MicroDescriptor
 			{
-				nickname   : split[ 1 ].to_owned(),
-				identifier : split[ 2 ].to_owned(),
-				publication                       ,
-				ip                                ,
-				orport                            ,
-				dirport                           ,
+				nickname   : split[ 1 ].to_string(),
+				identifier : split[ 2 ].to_string(),
+				publication                        ,
+				ip                                 ,
+				orport                             ,
+				dirport                            ,
 			}
 		)
 	}

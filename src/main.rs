@@ -1,7 +1,6 @@
 use libtorset::*;
 
 use std::process;
-use std::result;
 use std::fs::write;
 use clap::{ App, Arg, ArgMatches, SubCommand, AppSettings, crate_version, crate_authors };
 use env_logger;
@@ -10,7 +9,7 @@ use failure::{ ResultExt };
 
 /// Our type alias for handling errors throughout torset.
 ///
-type Result<T> = result::Result< T, failure::Error >;
+type TorsetResult<T> = Result< T, failure::Error >;
 
 
 const DEFAULT_SETNAME: &str = "tornodes";
@@ -45,11 +44,9 @@ fn main()
 }
 
 
-// TODO: Error handling
-// TODO: Take microdescriptor file from command line
-// TODO: Allow iptables, iptables with port, nftables
 //
-fn try_main() -> Result<()>
+//
+fn try_main() -> TorsetResult<()>
 {
 	let args = arguments();
 
@@ -113,7 +110,7 @@ fn try_main() -> Result<()>
 }
 
 
-fn print_to_file( file: &str, out: &str ) -> Result<()>
+fn print_to_file( file: &str, out: &str ) -> TorsetResult<()>
 {
 	write( file, out ).context( file.to_string() )?;
 
@@ -148,7 +145,7 @@ fn arguments() -> ArgMatches< 'static >
 		.version( crate_version!() )
 		.about  ( "Generate or update an ipset or an nftables set of tornodes from the cached microdescriptor file." )
 		.setting( AppSettings::SubcommandRequiredElseHelp )
-		.usage  ( "torset help     [subcommand]\n             torset ipset    [set_name] [OPTIONS] | ipset restore\n             torset nftables [var_name] [OPTIONS] > /etc/tornodes.conf")
+		.usage  ( "torset help     [subcommand]\n             torset ipset    [set_name]   [OPTIONS] | ipset restore\n             torset nftables [var_name]   [OPTIONS] > /etc/tornodes.conf")
 		.template
 		(
 "
