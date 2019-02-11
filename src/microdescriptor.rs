@@ -113,8 +113,8 @@ pub struct MicroDescriptor
 	pub identifier : String,
 	pub publication: DateTime< Utc >,
 	pub ip         : std::net::Ipv4Addr,
-	pub orport     : u32,
-	pub dirport    : u32,
+	pub orport     : u16,
+	pub dirport    : u16,
 }
 
 
@@ -132,8 +132,12 @@ impl MicroDescriptor
 
 		let publication  = Utc.datetime_from_str( &( split[ 3 ].to_string() + split[ 4 ] ), "%Y-%m-%d%H:%M:%S" )?;
 		let ip           = Ipv4Addr::from_str   (    split[ 5 ]                                                )?;
-		let orport : u32 = split[ 6 ].parse()?;
-		let dirport: u32 = split[ 7 ].parse()?;
+
+		// https://en.wikipedia.org/wiki/Registered_port
+		// Should fail if overflow occurs. I checked the std source.
+		//
+		let orport : u16 = split[ 6 ].parse()?;
+		let dirport: u16 = split[ 7 ].parse()?;
 
 		Ok
 		(

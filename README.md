@@ -18,7 +18,7 @@ After compilation this program doesn't require you to install any scripting lang
 libtorset
 =========
 
-WARNING: This has not at all been written with security in mind. It's not meant to be used on untrusted input. Use at your own risk. It does not however use any unsafes, but it has not been fuzz tested and such...
+Security status: I haven't audited the code with insane scrutiny, but there is no unsafe, and the algorithm of Microdescriptor::new is so simple that I don't think something could go wrong unless there is a bug in the stdlib functionality that it uses or in the `ensure!` macro from failure. I'm pretty confident there's nothing to exploit here, but I could one day dissect every line of the program and give it some thought about possible flaws, but I haven't got time for that right now.
 
 The crate is split between a library and a cli frontend, so if you need microdescriptor parsing, you can link against the library to read all fields of the microdescritor. Just add it as a dependency in your toml file.
 
