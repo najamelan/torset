@@ -18,7 +18,7 @@ After compilation this program doesn't require you to install any scripting lang
 libtorset
 =========
 
-Security status: I haven't audited the code with insane scrutiny, but there is no unsafe, and the algorithm of Microdescriptor::new is so simple that I don't think something could go wrong unless there is a bug in the stdlib functionality that it uses or in the `ensure!` macro from failure. I'm pretty confident there's nothing to exploit here, but I could one day dissect every line of the program and give it some thought about possible flaws, but I haven't got time for that right now.
+__Security status__: I haven't audited the code with insane scrutiny, but there is no unsafe, and the algorithm of Microdescriptor::new is so simple that I don't think something could go wrong unless there is a bug in the stdlib functionality that it uses or in the `ensure!` macro from failure. I'm pretty confident there's nothing to exploit here, but I could one day dissect every line of the program and give it some thought about possible flaws, but I haven't got time for that right now. I actually did run a fuzzer on it, which didn't discover anything (the code is in the submodule torset-afl).
 
 The crate is split between a library and a cli frontend, so if you need microdescriptor parsing, you can link against the library to read all fields of the microdescritor. Just add it as a dependency in your toml file.
 
