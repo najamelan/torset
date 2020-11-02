@@ -4,6 +4,7 @@
 	version = "19.2.10"
 	authors = [ "Naja Melan <najamelan on autistici.org>" ]
 	edition = "2018"
+	license = "Unlicense"
 
 
 [lib]
@@ -20,7 +21,7 @@
 
 [dependencies]
 
-	failure     = "0.1.1"
+	anyhow     = "1"
 	chrono      = "0.4.0"
 	clap        = "2"
 	env_logger  = "0.8"

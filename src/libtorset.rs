@@ -9,7 +9,7 @@ pub use nftables       ::nft_plain;
 pub use ipset          ::ipset;
 
 
-use failure::{ ensure, ResultExt };
+use anyhow::{ ensure, Context };
 use std::fs::read_to_string;
 use log::{error};
 use std::io;
@@ -21,7 +21,7 @@ const DEFAULT_INPUT_FILE: &str =  "/var/lib/tor/cached-microdesc-consensus";
 //
 //
 
-pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failure::Error >
+pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, anyhow::Error >
 {
 	// At the time of writing (beginning 2018) there were 6125 relays in the consensus file.
 	// The size of MicroDescriptor is 72 bytes, which gives 420KB plus the size of the string nickname and identifiers.
@@ -62,7 +62,7 @@ pub fn parse_descriptors( input: &str ) -> Result< Vec< MicroDescriptor >, failu
 
 
 
-pub fn read_descriptors( file: Option< &str > ) -> Result< String, failure::Error >
+pub fn read_descriptors( file: Option< &str > ) -> Result< String, anyhow::Error >
 {
 	let path;
 

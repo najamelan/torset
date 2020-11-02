@@ -4,12 +4,11 @@ use std::process;
 use std::fs::write;
 use clap::{ App, Arg, ArgMatches, SubCommand, AppSettings, crate_version, crate_authors };
 use env_logger;
-use failure::{ ResultExt };
-
+use anyhow::Context;
 
 /// Our type alias for handling errors throughout torset.
 ///
-type TorsetResult<T> = Result< T, failure::Error >;
+type TorsetResult<T> = anyhow::Result<T>;
 
 
 const DEFAULT_SETNAME: &str = "tornodes";
@@ -120,17 +119,14 @@ fn print_to_file( file: &str, out: &str ) -> TorsetResult<()>
 
 /// Return a prettily formatted error, including its entire causal chain.
 ///
-fn pretty_error( err: &failure::Error ) -> String
+fn pretty_error( err: &anyhow::Error ) -> String
 {
-
     let mut pretty = err.to_string();
-    let mut prev   = err.as_fail  ();
 
-    while let Some( next ) = prev.cause()
+    for cause in err.chain()
     {
-        pretty.push_str( ": "              );
-        pretty.push_str( &next.to_string() );
-        prev = next;
+    	pretty.push_str( ": "               );
+    	pretty.push_str( &cause.to_string() );
     }
 
     pretty

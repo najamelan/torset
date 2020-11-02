@@ -2,7 +2,7 @@ use std::str::FromStr;
 use std::net::Ipv4Addr;
 
 use chrono::prelude::*;
-use failure::ensure;
+use anyhow::ensure;
 
 
 
@@ -121,7 +121,7 @@ pub struct MicroDescriptor
 
 impl MicroDescriptor
 {
-	pub fn new( input: &str ) -> Result< MicroDescriptor, failure::Error >
+	pub fn new( input: &str ) -> Result< MicroDescriptor, anyhow::Error >
 	{
 		let split: Vec< &str > = input.split_whitespace().collect();
 
