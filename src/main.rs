@@ -1,9 +1,10 @@
+#![allow(clippy::suspicious_else_formatting)]
+
 use libtorset::*;
 
 use std::process;
 use std::fs::write;
 use clap::{ App, Arg, ArgMatches, SubCommand, AppSettings, crate_version, crate_authors };
-use env_logger;
 use anyhow::Context;
 
 /// Our type alias for handling errors throughout torset.
@@ -24,19 +25,6 @@ fn main()
 		// Print the error, including all of its underlying causes.
 		//
 		eprintln!( "{}", pretty_error( &err ) );
-
-
-		// If we get a non-empty backtrace (e.g., RUST_BACKTRACE=1 is set),
-		// then show it.
-		//
-		let backtrace = err.backtrace().to_string();
-
-
-		if !backtrace.trim().is_empty()
-		{
-			eprintln!( "{}", backtrace );
-		}
-
 
 		process::exit(1);
 	}
